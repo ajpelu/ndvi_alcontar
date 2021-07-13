@@ -1,0 +1,187 @@
+---
+title: "prepara_sentinel2"
+author: "Antonio J Perez-Luque"
+date: "2021-07-07"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r include=FALSE}
+knitr::opts_chunk$set(message=FALSE, warning=FALSE)
+```
+
+
+```{r pkg}
+#Cargar los paquetes a utilizar
+library(tidyverse)
+library(sf)
+library(raster)
+library(here)
+library(DiagrammeR)
+library(mapview)
+library(leafpop)
+library(exactextractr)
+```
+
+# Objetivos
+
+- Generar serie de datos espacio-temporal de varios **índices espectrales** (NDVI, EVI, etc.) de la zona de estudio. 
+
+## Información espacio-temporal 
+
+- Cobertura temporal: Vamos a usar datos desde 2017 hasta la actualidad. Las quemas fueron en 2018-12-18 (otoño), y en 2019-05-07 (primavera). 
+
+- Cobertura espacial:
+
+  - Se han creado unas parcelas control virtuales (*n*=8) en el entorno de la Experiencia Piloto (*EP*). 
+  - Se ha creado un *area of interest* (aoi) para extraer la información de satélite y posteriormente realizar los análisis.  
+  
+- Esquema: 
+
+```{r schema-aoi, echo=FALSE}
+# http://magjac.com/graphviz-visual-editor/
+DiagrammeR::grViz("
+digraph {
+node [shape = box, fontname = Helvetica]
+  EP; parcelas; AOI[label='Area of Interest']
+
+node [shape = oval, color = green];
+
+node [shape=parallelogram]
+union[label='Spatial Union']; 
+bb [label='Bounding box']; 
+buffer[label = 'buffer 50 m'];
+
+EP -> union;
+parcelas -> union;
+union -> bb -> buffer -> AOI
+}
+")
+```
+
+```{r read.spatial, echo=FALSE}
+pastos <- st_read(dsn = here::here("data/spatial/02_PASTOS_ADYACENTES/Pastos_adyacentes.shp"),
+               quiet = TRUE)
+ep <- st_read(dsn = here::here("data/spatial/01_EP_ANDALUCIA/EP_Andalucía.shp"),
+               quiet = TRUE)
+
+parcelas <- st_read(dsn = here::here("data/spatial/parcelas/GEO_PARCELAS.shp"),
+               quiet = TRUE)
+```
+
+```{r aoi}
+aoi <- st_buffer(st_as_sfc(st_bbox(st_union(parcelas, ep))), dist = 50, endCapStyle = 'FLAT', joinStyle = 'MITRE', mitreLimit = 3)
+```
+
+```{r plot.parcelas}
+mapviewOptions(default = TRUE)
+# mapviewGetOption("basemaps")
+mapviewOptions(basemaps = c(
+  "Esri.WorldImagery", "CartoDB.Positron",
+  "OpenStreetMap", "OpenTopoMap"
+))
+
+mapview(aoi, color = "yellow", col.regions = 'transparent', lwd = 1.5) +
+mapview(ep,
+        zcol = "ABREVIA", col.regions = c("#8dd3c7","#ff7f00","#bebada"), 
+          layer.name = "EP",
+  popup = popupTable(ep, zcol = c("ABREVIA", "Nombre_zon", "SUPERFICIE"))
+) +
+  mapview(parcelas,
+    layer.name = "Parcelas", zcol="TIPO", col.regions = c("blue","red"),
+    popup = popupTable(parcelas,
+      zcol = c("NOMBRE", "TRATAMIENT", "TIPO")
+    ), 
+    label = parcelas$NOMBRE
+  ) 
+```
+
+## Esquema de trabajo 
+```{r schema-gee, echo=FALSE}
+grViz("
+digraph {
+    
+S2 [shape = egg, color = 'gray', label = 'Sentinel 2A']
+S2cf [shape = egg, color = 'gray', label = 'Sentinel 2A corrected']
+
+node [shape = box, fontname = Helvetica]
+AOI[label='Area of Interest']
+customFilter [label = '.filter by Date \n .filter by Spatial Area']
+ndvi [label = 'NDVI collection']
+evi [label = 'EVI collection']
+ndvi_image [label = 'NDVI image i']
+parcelas [label = 'Interest plots (500m)']
+ndvi_ts [label = 'data/s2ndvi.csv']
+
+node [shape = oval, color = green];
+
+node [shape=parallelogram]
+maskS2cloud [label = 'Mask clouds \n cirrus, opaque (QA60)']
+filterCloudy [label = 'Filter cloudy pixel \n (<20%)']
+computeIV [label= 'compute NDVI \n compute EVI']
+exportGEE [label='export to GDrive']
+prepara_df [label='read images \n create stack']
+
+extract_pixels [label='extract pixels \n format Date \n generate Dataframe' ]
+
+subgraph cluster_gee {
+		color=black;
+		node [style=filled,color=white];
+		
+		S2 -> maskS2cloud -> filterCloudy -> S2cf;
+S2cf -> customFilter;
+AOI -> customFilter;
+customFilter -> computeIV;
+computeIV -> ndvi
+computeIV -> evi
+ndvi -> exportGEE
+		
+		label = 'GEE';
+	}
+	
+subgraph cluster_r {
+    color=blue;
+    label='R'
+// esto es en R 
+
+exportGEE -> ndvi_image 
+ndvi_image -> prepara_df
+prepara_df -> extract_pixels
+parcelas -> extract_pixels
+extract_pixels -> ndvi_ts
+}
+}
+",
+height = 900)
+```
+
+## Preparar datos de GEE
+```{r genera-date, eval=FALSE}
+l <- list.files(here::here("data/alcontar_s2NDVI"), 
+                pattern=".tif",
+                full.names = TRUE)
+r <- stack(l) 
+
+df <- exact_extract(r, parcelas, 
+              include_cell=TRUE, 
+              include_xy=TRUE, 
+              include_cols = "NOMBRE", force_df=TRUE) %>% 
+  bind_rows() %>% 
+  relocate(NOMBRE, x, y, cell, coverage_fraction) %>% 
+  pivot_longer(cols = starts_with("s2ndvi"), names_to = "s2ndvi_date", values_to = "value") %>% 
+  separate(s2ndvi_date, into = c("var", "dateraw"), sep = "_") %>% 
+  mutate(date = as.Date(dateraw, format="%Y.%m.%d")) %>% 
+  dplyr::select(-dateraw)
+
+
+write_csv(df, here::here("data/s2ndvi.csv"))
+```
+
+
+
+
+
+
+
