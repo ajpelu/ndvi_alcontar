@@ -8,4 +8,10 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+Analysis of derived remote sensing indices for Alcóntar area (Sierra de Filabres). 
+
+## Data preparation 
+- [**Explore data of NDVI from MODIS**](prepara_datos.html)
+- Generate NDVI data for selected plots (*parcelas 500 m^2^*) from Sentinel-S2R. See [**here**](prepara_sentinel2.Rmd)
+
+## Analysis 
