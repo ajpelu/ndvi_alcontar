@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Antonio J Perez-Luque" />
+
+<meta name="date" content="2021-07-19" />
+
+<title>study_area</title>
+
+<script src="site_libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="site_libs/viz-1.8.2/viz.js"></script>
+<link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="site_libs/grViz-binding-1.0.6.1/grViz.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="site_libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="site_libs/leaflet-providers-plugin-2.0.4.1/leaflet-providers-plugin.js"></script>
+<link href="site_libs/HomeButton-0.0.1/home-button.css" rel="stylesheet" />
+<script src="site_libs/HomeButton-0.0.1/home-button.js"></script>
+<script src="site_libs/HomeButton-0.0.1/easy-button-src.min.js"></script>
+<script src="site_libs/clipboard-0.0.1/setClipboardText.js"></script>
+<link href="site_libs/mapviewCSS-0.0.1/mapview-popup.css" rel="stylesheet" />
+<link href="site_libs/mapviewCSS-0.0.1/mapview.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">ndvi_alcontar</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/ajpelu/ndvi_alcontar">
+    <span class="fas fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">study_area</h1>
+<h4 class="author">Antonio J Perez-Luque</h4>
+<h4 class="date">2021-07-19</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-07-19
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>ndvi_alcontar/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20210623code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20210623)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20210623code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20210623)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomajpelundvialcontartreeb5be03ed93df42fb870d490e9849d25dc5acee3ctargetblankb5be03ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ajpelu/ndvi_alcontar/tree/b5be03ed93df42fb870d490e9849d25dc5acee3c" target="_blank">b5be03e</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomajpelundvialcontartreeb5be03ed93df42fb870d490e9849d25dc5acee3ctargetblankb5be03ea" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/ajpelu/ndvi_alcontar/tree/b5be03ed93df42fb870d490e9849d25dc5acee3c" target="_blank">b5be03e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    data/spatial/.DS_Store
+    Ignored:    data/spatial/01_EP_ANDALUCIA/.DS_Store
+    Ignored:    data/spatial/parcelas/.DS_Store
+
+Untracked files:
+    Untracked:  analysis/temporal_evolution_ndvi.Rmd
+
+Unstaged changes:
+    Modified:   analysis/prepara_sentinel2.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/study_area.Rmd</code>) and HTML (<code>docs/study_area.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ajpelu/ndvi_alcontar/blob/b5be03ed93df42fb870d490e9849d25dc5acee3c/analysis/study_area.Rmd" target="_blank">b5be03e</a>
+</td>
+<td>
+Antonio J Perez-Luque
+</td>
+<td>
+2021-07-19
+</td>
+<td>
+add study area
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>library(tidyverse)
+library(sf)
+library(raster)
+library(here)
+library(DiagrammeR)
+library(mapview)
+library(leafpop)
+library(exactextractr)</code></pre>
+<ul>
+<li><p>Cobertura espacial:</p>
+<ul>
+<li>Se han creado unas parcelas control virtuales (<em>n</em>=8) en el entorno de la Experiencia Piloto (<em>EP</em>).</li>
+<li>Se ha creado un <em>area of interest</em> (aoi) para extraer la información de satélite y posteriormente realizar los análisis.</li>
+</ul></li>
+</ul>
+<div id="htmlwidget-75fda900fe0110d6e6aa" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-75fda900fe0110d6e6aa">{"x":{"diagram":"\ndigraph {\nnode [shape = box, fontname = Helvetica]\n  EP; parcelas; AOI[label=\"Area of Interest\"]\n\nnode [shape = oval, color = green];\n\nnode [shape=parallelogram]\nunion[label=\"Spatial Union\"]; \nbb [label=\"Bounding box\"]; \nbuffer[label = \"buffer 50 m\"];\n\nEP -> union;\nparcelas -> union;\nunion -> bb -> buffer -> AOI\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p><strong>Study Area</strong></p>
+<div id="htmlwidget-086a7b35864569dd6547" style="width:100%;height:500px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-086a7b35864569dd6547">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"createMapPane","args":["polygon",420]},{"method":"addPolygons","args":[[[[{"lng":[-2.60850674678778,-2.60847463990399,-2.59983927273036,-2.5998720877085,-2.60850674678778],"lat":[37.3069419102795,37.3131337985655,37.3131049130299,37.306913031178,37.3069419102795]}]]],null,"aoi",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"polygon","stroke":true,"color":"yellow","weight":1.5,"opacity":0.9,"fill":true,"fillColor":"transparent","fillOpacity":0.6,"smoothFactor":1,"noClip":false},null,{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},"1",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},{"stroke":true,"weight":3,"opacity":0.9,"fillOpacity":0.84,"bringToFront":false,"sendToBack":false}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addHomeButton","args":[-2.60850674678778,37.306913031178,-2.59983927273036,37.3131337985655,"aoi","Zoom to aoi","<strong> aoi <\/strong>","bottomright"]},{"method":"addPolygons","args":[[[[{"lng":[-2.60668216834989,-2.60671403721739,-2.60672200573016,-2.60677379346629,-2.60685745239649,-2.6069092398257,-2.60690525643672,-2.60685745152044,-2.6067339566609,-2.60647103090008,-2.60641525853932,-2.60630371348149,-2.60614038112152,-2.60602883736529,-2.60588542265019,-2.60573404152699,-2.60557469250631,-2.60549501769383,-2.60533965204093,-2.60528786363683,-2.60524005849086,-2.60510461185827,-2.60488949140627,-2.60479786532401,-2.60471884615318,-2.60462258244651,-2.60455884257944,-2.60447916752676,-2.60439949371564,-2.60426006212207,-2.60413258378732,-2.6039732349598,-2.60379795083041,-2.60375014618905,-2.60382583639715,-2.60385770598691,-2.60389355979527,-2.60390949518394,-2.60393339697671,-2.60391347831793,-2.60386965815182,-2.60378998299288,-2.60369038980408,-2.60361071595745,-2.60351112236357,-2.60340356125593,-2.60331990283545,-2.60330795260663,-2.60328006546377,-2.60321234335329,-2.60314860326968,-2.60316055498302,-2.60330396907922,-2.60343144816544,-2.60355892749343,-2.60369437389523,-2.60380990146711,-2.60393339681083,-2.60405689257889,-2.60427998189855,-2.60437957496826,-2.60446323288935,-2.60456813045853,-2.60466392056746,-2.60472615905445,-2.60479388169033,-2.60487094164096,-2.60497050007086,-2.60507665546284,-2.60527661017174,-2.60542960077052,-2.60566280047005,-2.60588970049935,-2.6061051954518,-2.60634810044551,-2.60655099954258,-2.60668216834989],"lat":[37.3093164267614,37.3093721998251,37.3095235805221,37.3096112226065,37.3096948809441,37.3097984577399,37.309902034957,37.3099538232616,37.3099737419834,37.3099578066236,37.3099697583632,37.3100255304061,37.3100972378364,37.3100534168455,37.3100215466058,37.310021546238,37.3100095955335,37.310073334953,37.3101769121376,37.3102446348101,37.3103402444272,37.310471707337,37.3105633330872,37.3106469916014,37.3106966845169,37.3107784543138,37.3108023571244,37.310750568317,37.3107067477462,37.3105952032867,37.310555365452,37.3105593491633,37.3105314638538,37.3105115444282,37.3104677234849,37.3104159353541,37.3103442281154,37.3102526028893,37.3101888626786,37.3101251236318,37.3100852860556,37.3099817092246,37.3099339040406,37.3099139859944,37.3098701648018,37.3098223606236,37.3097665879608,37.3097347180207,37.309655043521,37.3095873203935,37.309515613817,37.309443905956,37.3094797600319,37.3094558578707,37.3094000851258,37.3093881338591,37.3093761833581,37.309328378679,37.3092765897277,37.309216833716,37.3091331751722,37.3091769964607,37.3092271884779,37.3092508049415,37.3092248013181,37.30921285062,37.3092163646606,37.3092064996053,37.3092106748999,37.3092195374449,37.3092276003849,37.3091885001791,37.3092048005053,37.30915354471,37.3091872005128,37.3092883000357,37.3093164267614]}]],[[{"lng":[-2.6004545935953,-2.60054563643539,-2.60065509184745,-2.60071219985492,-2.60089303852483,-2.60104056464365,-2.60114526107416,-2.60126423425577,-2.60132134134746,-2.60133085923556,-2.60134513592329,-2.60149742167013,-2.60158308223958,-2.60169729634687,-2.60174488545258,-2.60176867954444,-2.60174012646097,-2.6017437377398,-2.60167553065787,-2.60163128607063,-2.60186834323515,-2.60204519463698,-2.60222957212017,-2.60232740458018,-2.6024553404434,-2.60261337751304,-2.60276765194964,-2.60270368427991,-2.60269615929922,-2.60279022963871,-2.60289558811025,-2.60285419735599,-2.60281656880992,-2.60289558788826,-2.60298589483624,-2.60303857468167,-2.60311759277303,-2.60318156100846,-2.60320413789401,-2.60319284950352,-2.60316055498302,-2.60314860326968,-2.60321234335329,-2.60328006659223,-2.60330795260663,-2.60331990283545,-2.60340356125593,-2.60351112236357,-2.60358948399517,-2.60361071595745,-2.60355784142195,-2.60353526412648,-2.60350516140877,-2.60344119431933,-2.6033584124297,-2.60323047661972,-2.60312511859957,-2.60300094641419,-2.60294450450179,-2.60289558780747,-2.6028617223953,-2.60282785761011,-2.60280151750384,-2.60260585215594,-2.60242523760715,-2.6023048274768,-2.60221452003287,-2.60206024602846,-2.60187963124993,-2.60178932383023,-2.6017027790672,-2.60161623490952,-2.60147701103245,-2.60134531269038,-2.60121737740307,-2.60113835822159,-2.60103299981176,-2.60093140461937,-2.60088248800477,-2.60081852043117,-2.60077336641354,-2.60068682230202,-2.60060027736108,-2.60050244500551,-2.60046105426303,-2.6004545935953],"lat":[37.3099172492424,37.3097662501858,37.3095901707206,37.3094474020755,37.3093855367538,37.3092332512979,37.3091856619793,37.3090238586721,37.3088525372816,37.3087573591206,37.3086431443061,37.3085670020908,37.3084385107087,37.3083623689518,37.3082529137609,37.3080673155719,37.307924547448,37.3077770912622,37.3075924543947,37.3074695072708,37.3074619806737,37.3074318786569,37.3073716736027,37.3075635766687,37.3077404284072,37.3078683643855,37.3080226387631,37.3081806766009,37.3082521703389,37.3083876306418,37.3085456689075,37.3086698416249,37.3087450967932,37.3088767954638,37.3090047307865,37.309079986987,37.3092154479025,37.3092982288401,37.3093810106815,37.3094111135106,37.309443905956,37.309515613817,37.3095873203935,37.3096550435248,37.3097347180207,37.3097665879608,37.3098223606236,37.3098701648018,37.3099046440796,37.3099139859944,37.3099680085528,37.310047027179,37.3101373348326,37.310216353571,37.3102690327972,37.3103179487135,37.3103442882838,37.3104120195649,37.3104910380349,37.3105738197922,37.310652838259,37.3107205686125,37.3107958255774,37.310743145873,37.3107055173395,37.3107280945842,37.3107770114511,37.3107845367812,37.3106716521855,37.3106678897068,37.3107393824328,37.3107431455715,37.310660363693,37.3106001588726,37.3104759868408,37.3103518136927,37.3102727951536,37.3102991346383,37.310220116091,37.3101072320165,37.3101298082416,37.3101486230113,37.3101185201906,37.3100432646419,37.3099266175661,37.3099172492424]}]],[[{"lng":[-2.60280151750384,-2.60281656837481,-2.60282785724626,-2.60280904382031,-2.60271121102835,-2.60262466560592,-2.60250801923671,-2.60233493021782,-2.60221075715986,-2.60215431601464,-2.60216184081004,-2.60221828336188,-2.60228601304893,-2.60237255793809,-2.60241394932563,-2.60242147484668,-2.60235374362886,-2.60231611627361,-2.60230859100468,-2.60224085945045,-2.60219946955062,-2.60212797585212,-2.60204519438362,-2.60199627773728,-2.60194736151261,-2.60190597060994,-2.60187963138403,-2.60183823996338,-2.60181942648839,-2.60179684896195,-2.60171783056147,-2.60151840193048,-2.6012474796559,-2.60116469884891,-2.60100289801754,-2.60076960323744,-2.60076584130126,-2.60067553330961,-2.60061909220903,-2.60048739362178,-2.60047610525667,-2.6005400728391,-2.60053254702352,-2.60056641236405,-2.60057017553273,-2.60051749580641,-2.60060027787822,-2.60059275246246,-2.60067929635022,-2.6007997061331,-2.60092387862478,-2.60111954449254,-2.60121737740307,-2.60134531269038,-2.60147701103245,-2.60161623490952,-2.6017027790672,-2.60178932383023,-2.60187963124993,-2.60206024602846,-2.60221452003287,-2.6023048274768,-2.60242523760715,-2.60260585215594,-2.60280151750384],"lat":[37.3107958255774,37.3108372156316,37.3110780354574,37.3111344768316,37.3112059702617,37.3112624122485,37.311326379727,37.3114242128382,37.3114957065706,37.3115671998471,37.3116537441281,37.3117666283013,37.3118155445066,37.3118682240991,37.311951005273,37.3120149733315,37.3122482669518,37.312376202724,37.3125380029938,37.3126621752169,37.3126621758051,37.3125982081181,37.3125756311916,37.3125793940359,37.3125417659572,37.3124702727313,37.3124025420508,37.312334811198,37.3122633181849,37.3121880627217,37.312101517598,37.3120638892599,37.312075178786,37.3120413131446,37.312026261658,37.31199992225,37.3118719861558,37.3117929676104,37.3117139488205,37.3116198787467,37.3114731295634,37.3114543153681,37.3113828223863,37.3112774641941,37.3111796310487,37.3110328818593,37.3109350486165,37.3108673180342,37.3107356195974,37.3107055174024,37.3105587690095,37.3105324284559,37.3104759868408,37.3106001588726,37.310660363693,37.3107431455715,37.3107393824328,37.3106678897068,37.3106716521855,37.3107845367812,37.3107770114511,37.3107280945842,37.3107055173395,37.310743145873,37.3107958255774]}]]],null,"EP",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"polygon","stroke":true,"color":"#333333","weight":0.5,"opacity":[0.9,0.9,0.9],"fill":true,"fillColor":["#8DD3C7","#FF7F00","#BEBADA"],"fillOpacity":[0.6,0.6,0.6],"smoothFactor":1,"noClip":false},["<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>ABREVIA&emsp;<\/th><td>NP&emsp;<\/td><\/tr><tr><td>2<\/td><th>Nombre_zon&emsp;<\/th><td>Quemado sin pastoreo&emsp;<\/td><\/tr><tr><td>3<\/td><th>SUPERFICIE&emsp;<\/th><td>3.405322&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>ABREVIA&emsp;<\/th><td>P&emsp;<\/td><\/tr><tr><td>2<\/td><th>Nombre_zon&emsp;<\/th><td>Quemado con pastoreo&emsp;<\/td><\/tr><tr><td>3<\/td><th>SUPERFICIE&emsp;<\/th><td>5.611873&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>ABREVIA&emsp;<\/th><td>PR&emsp;<\/td><\/tr><tr><td>2<\/td><th>Nombre_zon&emsp;<\/th><td>Quemado primavera&emsp;<\/td><\/tr><tr><td>3<\/td><th>SUPERFICIE&emsp;<\/th><td>2.853400&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["NP","P","PR"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},{"stroke":true,"weight":1,"opacity":0.9,"fillOpacity":0.84,"bringToFront":false,"sendToBack":false}]},{"method":"addHomeButton","args":[-2.6069092398257,37.3073716736027,-2.6004545935953,37.3126621758051,"EP","Zoom to EP","<strong> EP <\/strong>","bottomright"]},{"method":"addLegend","args":[{"colors":["#8DD3C7","#FF7F00","#BEBADA"],"labels":["NP","P","PR"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"factor","title":"EP","extra":null,"layerId":null,"className":"info legend","group":"EP"}]},{"method":"addPolygons","args":[[[[{"lng":[-2.60192419428365,-2.6018997080363,-2.60187598384484,-2.60185374255966,-2.60183365997303,-2.60181634628527,-2.60180232756396,-2.60179202975969,-2.60178576576386,-2.60178372590194,-2.60178597215084,-2.60179243625618,-2.60180292180657,-2.60181711020178,-2.60183457033352,-2.60185477168459,-2.60187710044831,-2.60190087817868,-2.60192538240426,-2.60194986857982,-2.60197359270854,-2.6019958339476,-2.60201591651031,-2.60203323019922,-2.6020472489466,-2.60205754679875,-2.60206381085847,-2.60206585079258,-2.60206360461549,-2.60205714057288,-2.60204665506861,-2.60203246669732,-2.60201500656443,-2.60199480518728,-2.60197247637568,-2.60194869858143,-2.60192419428365],"lat":[37.3121855652522,37.312183771117,37.3121786080176,37.3121702328327,37.3121589000392,37.3121449539794,37.3121288183987,37.3121109835697,37.3120919913956,37.3120724189447,37.3120528609162,37.3120339115706,37.3120161466735,37.3120001060013,37.3119862769405,37.3119750796788,37.3119668544382,37.3119618511373,37.3119602217985,37.311962015928,37.3119671790125,37.3119755541748,37.311986886941,37.312000832972,37.3120169685259,37.3120348033332,37.3120537954935,37.31207336794,37.3120929259742,37.3121118753348,37.3121296402544,37.3121456809539,37.3121595100435,37.312170707332,37.3121789325943,37.312183935909,37.3121855652522]}]],[[{"lng":[-2.60084844272508,-2.60082395654037,-2.60080023246295,-2.60077799133972,-2.60075790895804,-2.600740595512,-2.60072657706184,-2.60071627954989,-2.6007100158587,-2.60070797630446,-2.60071022285473,-2.600716687246,-2.60072717305816,-2.60074136168305,-2.6007588220054,-2.60077902350219,-2.60080135236235,-2.60082513013692,-2.60084963435313,-2.60087412046604,-2.60089784448073,-2.60092008555785,-2.60094016791561,-2.6009574813628,-2.60097149983905,-2.60098179739886,-2.60098806115395,-2.60099010078038,-2.6009878543019,-2.60098138997337,-2.60097090420732,-2.60095671560635,-2.60093925528286,-2.60091905375998,-2.60089672485195,-2.60087294701349,-2.60084844272508],"lat":[37.3117905069578,37.3117887125724,37.3117835492172,37.3117751737788,37.3117638407418,37.3117498944559,37.3117337586732,37.3117159236727,37.3116969313627,37.3116773588155,37.3116578007334,37.3116388513784,37.3116210865165,37.3116050459231,37.3115912169821,37.3115800198776,37.3115717948269,37.3115667917428,37.3115651626411,37.3115669570208,37.311572120361,37.3115804957769,37.3115918287866,37.3116057750437,37.3116219107995,37.3116397457784,37.3116587380746,37.3116783106174,37.3116978687052,37.3117168180751,37.3117345829595,37.3117506235803,37.3117644525501,37.3117756496815,37.3117838747539,37.3117888778517,37.3117905069578]}]],[[{"lng":[-2.60125426177779,-2.60122977576376,-2.60120605182857,-2.60118381081479,-2.60116372850646,-2.60114641509544,-2.6011323966409,-2.60112209908532,-2.60111583531255,-2.60111379564127,-2.60111604204262,-2.60112250625758,-2.60113299187142,-2.60114718028198,-2.60116464038053,-2.60118484165084,-2.60120717028872,-2.60123094785196,-2.60125545187423,-2.60127993781645,-2.60130366168892,-2.60132590265658,-2.60134598494099,-2.60136329835316,-2.60137731683379,-2.60138761443724,-2.60139387827389,-2.60139591801736,-2.60139367168781,-2.60138720753559,-2.60137672196786,-2.60136253358122,-2.60134507348152,-2.60132487218513,-2.60130254349938,-2.60127876587225,-2.60125426177779],"lat":[37.3113211766151,37.3113193823373,37.3113142190904,37.3113058437578,37.3112945108205,37.3112805646256,37.3112644289223,37.311246593987,37.3112276017262,37.3112080292107,37.3111884711418,37.3111695217811,37.3111517568948,37.311135716259,37.3111218872589,37.3111106900804,37.311102464943,37.3110974617624,37.3110958325569,37.311097626829,37.3111027900609,37.311111165371,37.3111224982809,37.3111364444471,37.3111525801235,37.3111704150372,37.3111894072841,37.3112089797952,37.3112285378698,37.3112474872455,37.3112652521543,37.3112812928175,37.3112951218464,37.3113063190517,37.3113145442107,37.3113195474052,37.3113211766151]}]],[[{"lng":[-2.60219088951021,-2.60216640360073,-2.60214267971078,-2.60212043868159,-2.60210035629764,-2.60208304275308,-2.60206902411117,-2.60205872632006,-2.60205246227077,-2.60205042229038,-2.6020526683594,-2.60205913222894,-2.60206961749474,-2.60208380556524,-2.60210126534201,-2.60212146631862,-2.6021437946998,-2.60216757205115,-2.60219207591275,-2.60221656175043,-2.60224028557764,-2.60226252656073,-2.60228260892076,-2.60229992246645,-2.60231394113444,-2.60232423897342,-2.6023305030866,-2.60233254313918,-2.60233029714195,-2.60232383333516,-2.60231334811547,-2.6022991600689,-2.60228170029098,-2.60226149928828,-2.60223917085923,-2.602215393444,-2.60219088951021],"lat":[37.3111492068834,37.311147412867,37.3111422498841,37.3111338748101,37.3111225421183,37.3111085961482,37.3110924606423,37.3110746258709,37.3110556337355,37.3110360613033,37.3110165032727,37.3109975539045,37.3109797889649,37.3109637482316,37.310949919093,37.310938721739,37.3109304963945,37.3109254929814,37.3109238635253,37.3109256575361,37.310930820504,37.3109391955555,37.3109505282199,37.3109644741612,37.3109806096403,37.31099844439,37.3110174365115,37.3110370089395,37.3110565669757,37.3110755163589,37.311093281321,37.3111093220816,37.3111231512491,37.3111343486298,37.311142573996,37.3111475774229,37.3111492068834]}]],[[{"lng":[-2.60169890905704,-2.60167442382887,-2.60165070063541,-2.60162846029674,-2.60160837857636,-2.60159106564826,-2.60157704755695,-2.60156675023387,-2.60156048655581,-2.60155844683858,-2.60156069305468,-2.60156715695076,-2.60157764212176,-2.60159182997898,-2.60160928943049,-2.60162948997975,-2.60165181784445,-2.60167559460589,-2.60170009782209,-2.60172458297848,-2.6017483061092,-2.60177054640177,-2.60179062809823,-2.60180794102748,-2.60182195914486,-2.60183225651581,-2.60183852025774,-2.60184056004717,-2.60183831390284,-2.6018318500695,-2.60182136494461,-2.6018071771113,-2.60178971765864,-2.60176951708331,-2.60174718917074,-2.60172341234542,-2.60169890905704],"lat":[37.3088385463132,37.3088367521237,37.3088315889595,37.3088232137017,37.3088118808291,37.3087979346865,37.3087817990218,37.3087639641102,37.3087449718574,37.308725399334,37.3087058412415,37.3086868918423,37.3086691269036,37.3086530862032,37.3086392571283,37.3086280598671,37.3086198346415,37.3086148313699,37.3086132020734,37.3086149962573,37.3086201594065,37.3086285346418,37.3086398674871,37.3086538136009,37.3086699492387,37.3086877841287,37.3087067763677,37.3087263488867,37.3087459069849,37.3087648563991,37.3087826213603,37.308798662088,37.3088124911917,37.3088236884797,37.3088319137269,37.3088369170124,37.3088385463132]}]],[[{"lng":[-2.60219273319537,-2.60216824762898,-2.60214452408469,-2.60212228339321,-2.60210220132878,-2.60208488807585,-2.60207086968878,-2.60206057210801,-2.60205430821815,-2.60205226834144,-2.60205451445525,-2.60206097830932,-2.60207146349987,-2.60208565143761,-2.60210311102816,-2.60212331177074,-2.6021456398772,-2.60216941692147,-2.60219392045297,-2.60221840594757,-2.60224212942913,-2.60226437007449,-2.602284452115,-2.60230176536909,-2.60231578378223,-2.60232608141087,-2.60233234536461,-2.60233438531351,-2.60233213927148,-2.60232567548015,-2.60231519033571,-2.60230100242189,-2.60228354283019,-2.60226334206153,-2.60224101390721,-2.60221723679906,-2.60219273319537],"lat":[37.3098170382543,37.30981524417,37.3098100811072,37.3098017059437,37.3097903731555,37.3097764270849,37.3097602914776,37.3097424566069,37.3097234643774,37.3097038918591,37.3096843337531,37.3096653843223,37.3096476193351,37.3096315785703,37.3096177494175,37.3096065520671,37.3095983267436,37.3095933233684,37.309591693966,37.3095934880446,37.3095986510924,37.3096070262335,37.3096183589943,37.3096323050361,37.3096484406166,37.3096662754656,37.3096852676812,37.3097048401952,37.3097243983069,37.3097433477526,37.3097611127624,37.3097771535544,37.3097909827361,37.3098021801134,37.3098104054585,37.3098154088475,37.3098170382543]}]],[[{"lng":[-2.60112703954022,-2.60110255407915,-2.6010788306856,-2.60105659018572,-2.60103650834791,-2.60101919534973,-2.60100517723783,-2.60099487994426,-2.60098861634492,-2.60098657675323,-2.60098882313787,-2.60099528724037,-2.6010057726494,-2.60101996076903,-2.60103742049936,-2.60105762133536,-2.60107994948602,-2.60110372652396,-2.60112822999878,-2.60115271538807,-2.60117643871888,-2.60119867917266,-2.60121876098655,-2.60123607398588,-2.60125009212386,-2.6012603894653,-2.60126665312852,-2.6012686927924,-2.60126644647955,-2.60125998243978,-2.60124949707686,-2.60123530898115,-2.60121784924967,-2.60119764838759,-2.60117532018905,-2.60115154308723,-2.60112703954022],"lat":[37.3098728716271,37.3098710773278,37.3098659140705,37.3098575387387,37.3098462058137,37.3098322596419,37.309816123972,37.3097982890794,37.3097792968692,37.3097597244108,37.3097401664036,37.3097212171074,37.3097034522865,37.3096874117148,37.3096735827758,37.3096623856535,37.3096541605656,37.3096491574263,37.3096475282527,37.3096493225463,37.3096544857887,37.309662861098,37.3096741939957,37.3096881401386,37.3097042757816,37.3097221106526,37.309741102849,37.309760675303,37.3097802333159,37.3097991826271,37.3098169474705,37.3098329880695,37.3098468170373,37.3098580141865,37.309866239296,37.3098712424492,37.3098728716271]}]],[[{"lng":[-2.60229868293167,-2.60227419715076,-2.60225047339758,-2.6022282325092,-2.60220815026582,-2.60219083685734,-2.60217681834286,-2.60216652066668,-2.6021602567163,-2.60215821681582,-2.60216046294331,-2.6021669268481,-2.60217741212487,-2.60219160018172,-2.60220905992065,-2.60222926083636,-2.60225158913543,-2.60227536638597,-2.60229987013111,-2.60232435584022,-2.60234807953067,-2.60237032037295,-2.60239040259239,-2.60240771600202,-2.60242173454258,-2.60243203226664,-2.60243829628089,-2.60244033625357,-2.60243809019787,-2.60243162635581,-2.60242114112515,-2.60240695309222,-2.60238949335216,-2.60236929241036,-2.60234696406342,-2.60232318674901,-2.60229868293167],"lat":[37.3105611762057,37.3105593821284,37.3105542190767,37.3105458439278,37.3105345111576,37.3105205651078,37.3105044295232,37.3104865946767,37.310467602472,37.3104480299784,37.3104284718963,37.3104095224878,37.3103917575206,37.310375716773,37.310361887634,37.3103506902935,37.310342464976,37.3103374616024,37.3103358321972,37.3103376262689,37.3103427893057,37.310351164432,37.3103624971749,37.3103764431959,37.3103925787537,37.3104104135785,37.3104294057693,37.3104489782586,37.3104685363464,37.3104874857698,37.3105052507596,37.3105212915344,37.3105351207023,37.3105463180696,37.3105545434088,37.3105595467962,37.3105611762057]}]],[[{"lng":[-2.60655390919545,-2.60652942363374,-2.60650569989916,-2.6064834588282,-2.60646337620664,-2.60644606223584,-2.60643204299199,-2.60642174444156,-2.60641547949862,-2.60641343851741,-2.60641568350886,-2.6064221462568,-2.60643263039108,-2.60644681735449,-2.60646427608226,-2.60648447609982,-2.60650680364105,-2.60653058029705,-2.60655508362905,-2.60657956911896,-2.60660329279081,-2.60662553381564,-2.60664561641327,-2.60666293038521,-2.60667694965512,-2.60668724825341,-2.60669351326023,-2.60669555431362,-2.60669330939396,-2.60668684670876,-2.6066763626206,-2.60666217568112,-2.60664471695222,-2.60662451690859,-2.60660218931951,-2.60657841259963,-2.60655390919545],"lat":[37.3097817630934,37.3097799699048,37.3097748077231,37.3097664333993,37.309755101384,37.309741155996,37.3097250209601,37.3097071865325,37.3096881946042,37.3096686222359,37.3096490641244,37.3096301145327,37.3096123492339,37.3095963080166,37.3095824782838,37.3095712802437,37.3095630541418,37.3095580499231,37.3095564196377,37.3095582128207,37.3095633749874,37.3095717492887,37.3095830812767,37.3095970266359,37.3096131616449,37.3096309960508,37.3096499879653,37.3096695603292,37.3096891184464,37.3097080680531,37.3097258333744,37.309741874619,37.3097557043806,37.3097669024476,37.3097751285711,37.3097801328036,37.3097817630934]}]],[[{"lng":[-2.60582749872543,-2.60580301316497,-2.60577928946788,-2.60575704846951,-2.60573696595344,-2.60571965211782,-2.60570563303475,-2.60569533466578,-2.6056890699195,-2.60568702914416,-2.60568927434443,-2.60569573729781,-2.60570622162789,-2.60572040877153,-2.60573786765846,-2.6057580678093,-2.60578039545386,-2.60580417218012,-2.60582867554716,-2.60585316103583,-2.60587688467018,-2.60589912562243,-2.60591920811457,-2.60593652195133,-2.60595054106047,-2.6059608394773,-2.60596710428745,-2.60596914513498,-2.60596690000649,-2.60596043711586,-2.60594995283189,-2.60593576571219,-2.60591830682412,-2.60589810664721,-2.60587577895479,-2.60585200216466,-2.60582749872543],"lat":[37.3098133299987,37.309811536644,37.3098063743004,37.3097979998237,37.3097866676693,37.30977272216,37.3097565870246,37.309738752522,37.3097197605456,37.3097001881576,37.3096806300554,37.3096616805016,37.3096439152683,37.3096278741421,37.3096140445231,37.3096028466162,37.3095946206627,37.3095896166032,37.3095879864829,37.3095897798319,37.3095949421606,37.3096033166147,37.3096146487419,37.3096285942223,37.3096447293309,37.3096625638118,37.3096815557744,37.309701128158,37.3097206862659,37.3097396358346,37.3097574010904,37.309773442244,37.3097872718918,37.3097984698256,37.3098066958007,37.309811699874,37.3098133299987]}]],[[{"lng":[-2.60511585857277,-2.60509137290767,-2.60506764913368,-2.60504540808851,-2.60502532555713,-2.60500801173817,-2.60499399270322,-2.60498369441238,-2.60497742977185,-2.60497538912668,-2.60497763447758,-2.60498409759746,-2.60499458210487,-2.60500876943127,-2.60502622850085,-2.60504642882866,-2.60506875663915,-2.60509253351525,-2.60511703701149,-2.6051415226048,-2.60516524631605,-2.60518748731511,-2.60520756982256,-2.60522488364265,-2.60523890270367,-2.60524920104237,-2.60525546574678,-2.60525750646414,-2.60525526118503,-2.60524879812789,-2.6052383136666,-2.60522412636413,-2.60520666729341,-2.60518646693952,-2.60516413908117,-2.6051403621412,-2.60511585857277],"lat":[37.3099210352704,37.309919241798,37.3099140793289,37.3099057047227,37.3098943724386,37.3098804268037,37.3098642915501,37.3098464569408,37.3098274648721,37.3098078924092,37.3097883342516,37.3097693846639,37.3097516194189,37.3097355783035,37.3097217487179,37.3097105508655,37.3097023249864,37.3096973210186,37.3096956910046,37.3096974844714,37.3097026469255,37.3097110215092,37.309722353766,37.3097362993721,37.3097524345988,37.3097702691865,37.3097892612413,37.3098088336999,37.3098283918631,37.3098473414658,37.3098651067334,37.309881147876,37.3098949774905,37.3099061753697,37.3099144012705,37.3099194052521,37.3099210352704]}]],[[{"lng":[-2.60450845015723,-2.60448396428135,-2.60446024033349,-2.60443799915662,-2.60441791653973,-2.60440060268404,-2.60438658366227,-2.6043762854341,-2.60437002090383,-2.60436798041317,-2.60437022595813,-2.60437668930572,-2.60438717406757,-2.60440136166742,-2.60441882102114,-2.60443902163515,-2.60446134972521,-2.60448512686574,-2.60450963060326,-2.60453411640734,-2.60455784029247,-2.60458008142322,-2.60460016401618,-2.604617477873,-2.60463149692085,-2.60464179519689,-2.60464805979103,-2.60465010035389,-2.60464785488072,-2.60464139159587,-2.60463090688013,-2.60461671930422,-2.60459925994936,-2.60457905930927,-2.60455673117135,-2.60453295396693,-2.60450845015723],"lat":[37.3106274921606,37.3106256985502,37.3106205359481,37.310612161218,37.3106008288229,37.3105868830931,37.3105707477639,37.3105529131002,37.3105339210003,37.3105143485302,37.3104947903896,37.3104758408425,37.3104580756607,37.310442034629,37.3104282051451,37.3104170074094,37.3104087816583,37.310403777826,37.3104021479508,37.3104039415556,37.3104091041427,37.3104174788503,37.3104288112181,37.310442756919,37.3104588922214,37.3104767268634,37.3104957189495,37.3105152914153,37.3105348495615,37.3105537991236,37.310571564328,37.3105876053869,37.3106014348997,37.3106126326622,37.310620858435,37.3106258622811,37.3106274921606]}]],[[{"lng":[-2.60708123565987,-2.60708838633092,-2.6071087726397,-2.60714039902145,-2.60718016966586,-2.60722419155645,-2.60726815554185,-2.60730775813866,-2.6073391227796,-2.60735917927479,-2.60736596434345,-2.60735881379779,-2.60733842756523,-2.60730680118143,-2.60726703045747,-2.60722300844022,-2.60717904432944,-2.60713944165641,-2.60710807701753,-2.60708802060188,-2.60708123565987],"lat":[37.3102798274039,37.3102447108773,37.3102130780673,37.3101880254077,37.3101720052198,37.3101665856654,37.3101722972462,37.3101885808751,37.3102138426034,37.3102456096444,37.3102807724248,37.3103158889687,37.3103475218217,37.3103725745336,37.310388594763,37.3103940143324,37.3103883027344,37.3103720190624,37.3103467572819,37.3103149901993,37.3102798274039]}]],[[{"lng":[-2.60763433342753,-2.6076414839582,-2.60766187035887,-2.60769349705577,-2.60773326820774,-2.60777729074862,-2.60782125546339,-2.60786085879724,-2.60789222411076,-2.60791228114824,-2.60791906657579,-2.60791191617051,-2.60789152984607,-2.60785990314713,-2.60782013191561,-2.60777610924806,-2.6077321444079,-2.60769254099782,-2.60766117568635,-2.60764111872842,-2.60763433342753],"lat":[37.3114587280567,37.3114236115028,37.3113919786043,37.3113669258036,37.3113509054359,37.3113454856806,37.3113511970589,37.3113674805038,37.3113927420843,37.3114245090284,37.3114596717721,37.3114947883432,37.3115264212847,37.3115514741377,37.3115674945469,37.3115729143172,37.3115672029217,37.3115509194338,37.311525657801,37.3114938908154,37.3114587280567]}]],[[{"lng":[-2.60129205984417,-2.60129921296559,-2.60131960102946,-2.6013512282992,-2.60139099887759,-2.60143501975462,-2.60147898187813,-2.60151858194697,-2.60154994364132,-2.60156999705972,-2.60157677922256,-2.6015696262265,-2.60154923823883,-2.601517610967,-2.60147784030905,-2.60143381930536,-2.60138985705649,-2.60135025691146,-2.6013188952192,-2.60129884188037,-2.60129205984417],"lat":[37.3078649620104,37.3078298458335,37.3077982140182,37.3077731629008,37.3077571446517,37.3077517272428,37.3077574409659,37.3077737265243,37.3077989897801,37.3078307577974,37.3078659209072,37.3079010371013,37.3079326689596,37.3079577201293,37.3079737384199,37.3079791558438,37.3079734421034,37.307957156502,37.3079318931939,37.3079001251351,37.3078649620104]}]],[[{"lng":[-2.6004333713441,-2.60044052497995,-2.60046091372186,-2.60049254176688,-2.60053231314191,-2.60057633475895,-2.60062029749341,-2.60065989798432,-2.60069125987056,-2.60071131323189,-2.60071809509428,-2.6007109415838,-2.60069055291808,-2.60065892487097,-2.60061915341637,-2.60057513167267,-2.60053116881285,-2.60049156824574,-2.60046020636159,-2.60044015307983,-2.6004333713441],"lat":[37.309032277145,37.3089971610299,37.3089655293727,37.3089404784942,37.3089244605415,37.3089190434575,37.308924757502,37.308941043347,37.3089663068266,37.3089980749828,37.3090332381331,37.3090683542654,37.3090999859656,37.3091250368964,37.3091410548906,37.3091464719896,37.3091407579278,37.3091244720398,37.309099208508,37.3090674403102,37.309032277145]}]],[[{"lng":[-2.60691238048478,-2.60691953114573,-2.60693991727989,-2.60697154333958,-2.60701131354601,-2.60705533492559,-2.60709929837696,-2.60713890046899,-2.60717026468382,-2.60719032087328,-2.60719710578651,-2.60718995525093,-2.607169569193,-2.60713794313125,-2.60709817284528,-2.60705415133904,-2.6070101877623,-2.60697058559405,-2.60693922138127,-2.60691916527136,-2.60691238048478],"lat":[37.3093845434406,37.3093494269188,37.3093177941321,37.309292741512,37.3092767213759,37.3092713018806,37.3092770135219,37.3092932972069,37.3093185589813,37.309350326054,37.3093854888485,37.3094206053875,37.3094522382172,37.3094772908896,37.3094933110672,37.3094987305775,37.3094930189189,37.3094767351909,37.3094514733643,37.30941970625,37.3093845434406]}]],[[{"lng":[-2.60562370432284,-2.60563085569124,-2.60565124266441,-2.60568286961256,-2.60572264066994,-2.60576666277965,-2.60581062676886,-2.6058502291538,-2.60588159338793,-2.6059016493212,-2.60590843372782,-2.60590128248482,-2.60588089558786,-2.60584926863765,-2.60580949750072,-2.60576547526435,-2.60572151114976,-2.6056819086886,-2.60565054445652,-2.60563048860281,-2.60562370432284],"lat":[37.3104843534375,37.3104492370042,37.3104176044502,37.3103925521842,37.3103765324891,37.3103711134784,37.3103768256005,37.3103931097155,37.3104183718269,37.3104501391106,37.3104853019695,37.3105204184201,37.3105520510171,37.3105771033353,37.310593123072,37.3105985420977,37.3105928299583,37.3105765458003,37.3105512836367,37.3105195163114,37.3104843534375]}]],[[{"lng":[-2.60041739727816,-2.60042455106543,-2.60044494021234,-2.60047656887631,-2.60051634102363,-2.60056036349073,-2.60060432706979,-2.60064392831719,-2.60067529079774,-2.60069534453303,-2.60070212651242,-2.60069497285053,-2.60067458377982,-2.60064295511376,-2.60060318288686,-2.60055916029309,-2.60051519658866,-2.60047559526506,-2.6004442327866,-2.60042417913089,-2.60041739727816],"lat":[37.3104867227221,37.3104516066175,37.3104199749732,37.3103949241087,37.3103789061698,37.310373489098,37.310379203152,37.3103954890027,37.3104207524839,37.3104525206372,37.3104876837805,37.3105227999023,37.3105544315897,37.3105794825064,37.3105955004869,37.3106009175737,37.3105952035024,37.3105789176086,37.3105536540753,37.3105218858804,37.3104867227221]}]],[[{"lng":[-2.60284946357729,-2.60285661594962,-2.60287700329253,-2.60290862994001,-2.60294840005575,-2.60299242067503,-2.60303638277091,-2.60307598304495,-2.60310734515724,-2.60312739916542,-2.60313418203214,-2.60312702978517,-2.60310664251846,-2.6030750158689,-2.60303524567361,-2.60299122492768,-2.60294726270644,-2.6029076623562,-2.60287630024599,-2.60285624631736,-2.60284946357729],"lat":[37.3076057441955,37.3075706279187,37.3075389958295,37.3075139442911,37.3074979255152,37.3074925075252,37.3074982206698,37.3075145057089,37.3075397685556,37.3075715363138,37.3076066993398,37.307641815634,37.3076734477662,37.3076984993568,37.3077145181743,37.3077199361792,37.3077142230173,37.3076979379352,37.3076726750363,37.3076409072366,37.3076057441955]}]]],null,"Parcelas",{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"pane":"polygon","stroke":true,"color":"#333333","weight":0.5,"opacity":[0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9,0.9],"fill":true,"fillColor":["#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#FF0000","#0000FF","#0000FF","#0000FF","#0000FF","#0000FF","#0000FF","#0000FF","#0000FF"],"fillOpacity":[0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6,0.6],"smoothFactor":1,"noClip":false},["<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>1&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_PR_18&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>2&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_PR_15&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>3&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_PR_17&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>4&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_PR_16&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>5&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_P_4&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>6&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_P_11&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>7&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_P_12&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>8&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_P_14&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>9&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_NP_7&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>NOPASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>10&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_NP_8&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>NOPASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>11&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_NP_9&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>NOPASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>12&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_NP_13&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>NOPASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>QUEMA&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>13&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_CON_NP2&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>NOPASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>CONTROL&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>14&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_CON_NP1&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>NOPASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>CONTROL&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>15&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_CON_P6&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>CONTROL&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>16&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_CON_P7&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>CONTROL&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>17&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_CON_NP3&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>NOPASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>CONTROL&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>18&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_CON_NP4&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>NOPASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>CONTROL&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>19&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_CON_P8&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>CONTROL&emsp;<\/td><\/tr><\/table><\/div>","<div class='scrollableContainer'><table class= id='popup'><tr class='coord'><td><\/td><th><b>Feature ID&emsp;<\/b><\/th><td>20&emsp;<\/td><\/tr><tr><td>1<\/td><th>NOMBRE&emsp;<\/th><td>AL_CON_P5&emsp;<\/td><\/tr><tr><td>2<\/td><th>TRATAMIENT&emsp;<\/th><td>PASTOREO&emsp;<\/td><\/tr><tr><td>3<\/td><th>TIPO&emsp;<\/th><td>CONTROL&emsp;<\/td><\/tr><\/table><\/div>"],{"maxWidth":800,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"closeOnClick":true,"className":""},["AL_PR_18","AL_PR_15","AL_PR_17","AL_PR_16","AL_P_4","AL_P_11","AL_P_12","AL_P_14","AL_NP_7","AL_NP_8","AL_NP_9","AL_NP_13","AL_CON_NP2","AL_CON_NP1","AL_CON_P6","AL_CON_P7","AL_CON_NP3","AL_CON_NP4","AL_CON_P8","AL_CON_P5"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},{"stroke":true,"weight":1,"opacity":0.9,"fillOpacity":0.84,"bringToFront":false,"sendToBack":false}]},{"method":"addHomeButton","args":[-2.60791906657579,37.3074925075252,-2.60041739727816,37.3121855652522,"Parcelas","Zoom to Parcelas","<strong> Parcelas <\/strong>","bottomright"]},{"method":"addLayersControl","args":[["CartoDB.Positron","Esri.WorldImagery","OpenStreetMap","OpenTopoMap"],["aoi","EP","Parcelas"],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addLegend","args":[{"colors":["#0000FF","#FF0000"],"labels":["CONTROL","QUEMA"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"factor","title":"Parcelas","extra":null,"layerId":null,"className":"info legend","group":"Parcelas"}]},{"method":"addHomeButton","args":[-2.60850674678778,37.306913031178,-2.59983927273036,37.3131337985655,null,"Zoom to full extent","<strong>Zoom full<\/strong>","bottomleft"]}],"limits":{"lat":[37.306913031178,37.3131337985655],"lng":[-2.60850674678778,-2.59983927273036]},"fitBounds":[37.306913031178,-2.60850674678778,37.3131337985655,-2.59983927273036,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Catalina 10.15.3
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] exactextractr_0.5.1 leafpop_0.0.6       mapview_2.10.0     
+ [4] DiagrammeR_1.0.6.1  here_1.0.1          raster_3.4-5       
+ [7] sp_1.4-5            sf_0.9-7            forcats_0.5.1      
+[10] stringr_1.4.0       dplyr_1.0.6         purrr_0.3.4        
+[13] readr_1.4.0         tidyr_1.1.3         tibble_3.1.2       
+[16] ggplot2_3.3.3       tidyverse_1.3.1     workflowr_1.6.2    
+
+loaded via a namespace (and not attached):
+ [1] fs_1.5.0                satellite_1.0.2         lubridate_1.7.10       
+ [4] webshot_0.5.2           RColorBrewer_1.1-2      httr_1.4.2             
+ [7] rprojroot_2.0.2         tools_4.0.2             backports_1.2.1        
+[10] bslib_0.2.4             utf8_1.1.4              R6_2.5.0               
+[13] KernSmooth_2.23-18      DBI_1.1.1               colorspace_2.0-0       
+[16] withr_2.4.1             tidyselect_1.1.0        leaflet_2.0.4.1        
+[19] compiler_4.0.2          git2r_0.28.0            leafem_0.1.3           
+[22] cli_2.5.0               rvest_1.0.0             xml2_1.3.2             
+[25] sass_0.3.1              scales_1.1.1            classInt_0.4-3         
+[28] systemfonts_1.0.0       digest_0.6.27           svglite_1.2.3.2        
+[31] rmarkdown_2.8           base64enc_0.1-3         pkgconfig_2.0.3        
+[34] htmltools_0.5.1.1       dbplyr_2.1.1            htmlwidgets_1.5.3      
+[37] rlang_0.4.10            readxl_1.3.1            rstudioapi_0.13        
+[40] farver_2.0.3            visNetwork_2.0.9        jquerylib_0.1.3        
+[43] generics_0.1.0          jsonlite_1.7.2          crosstalk_1.1.1        
+[46] magrittr_2.0.1          Rcpp_1.0.6              munsell_0.5.0          
+[49] fansi_0.4.2             gdtools_0.2.3           lifecycle_1.0.0        
+[52] stringi_1.5.3           whisker_0.4             yaml_2.2.1             
+[55] grid_4.0.2              promises_1.2.0.1        crayon_1.4.1           
+[58] lattice_0.20-41         haven_2.3.1             hms_1.0.0              
+[61] knitr_1.31              pillar_1.6.1            uuid_0.1-4             
+[64] codetools_0.2-18        stats4_4.0.2            reprex_2.0.0           
+[67] glue_1.4.2              evaluate_0.14           leaflet.providers_1.9.0
+[70] modelr_0.1.8            vctrs_0.3.8             png_0.1-7              
+[73] httpuv_1.5.5            cellranger_1.1.0        gtable_0.3.0           
+[76] assertthat_0.2.1        xfun_0.23               broom_0.7.6            
+[79] e1071_1.7-4             later_1.1.0.1           class_7.3-18           
+[82] units_0.6-7             brew_1.0-6              ellipsis_0.3.2         </code></pre>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
