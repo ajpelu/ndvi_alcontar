@@ -1,0 +1,368 @@
+---
+title: "temporal_evolution_ndvi"
+author: "Antonio J Perez-Luque"
+date: "2021-07-13"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+bibliography: references.bib
+csl: ecology-letters.csl
+---
+
+
+```{r include=FALSE}
+knitr::opts_chunk$set(message=FALSE, warning=FALSE)
+```
+
+```{r pkg}
+library(tidyverse)
+library(stringr)
+library(here)
+library(DiagrammeR)
+library(plotrix)
+library(dygraphs)
+library(xts)
+library(lubridate)
+library(ISOweek)
+```
+
+## Perpare data 
+- Prepare data. Split dataset into *metadata* (`parcela_metadata`) (parcelas's name, coordinates, cell identifier), and data (`ndvi`) (value of ndvi by date and parcela; long format)
+
+- Remove ndvi values < 0
+
+- Create new tags for the treatment: 
+  - PR ~ Grazing+Spring 
+  - P ~ Grazing+Autumn
+  - NP ~ NoGrazing+Autumn
+  - CON ~ Control 
+  
+```{r prepare-data}
+df <- read_csv(here::here("data/s2ndvi.csv")) %>% 
+  mutate(treatment = case_when(
+         str_detect(NOMBRE, "AL_PR") ~ "Grazing+Spring",
+         str_detect(NOMBRE, "AL_P_") ~ "Grazing+Autumn",
+         str_detect(NOMBRE, "AL_NP_") ~ "NoGrazing+Autumn", 
+         str_detect(NOMBRE, "AL_CON_NP") ~ "Control",
+         str_detect(NOMBRE, "AL_CON_P") ~ "Control"))
+
+ndvi <- df %>% filter(value >= 0)
+```
+
+
+- Average values by date, parcela and treatment 
+
+```{r aggregate-ndvi}
+ndvi_avg <- ndvi %>% 
+  mutate(datew = paste(
+    year(date), 
+    paste0("W", sprintf("%02d", week(date))),
+    sep = "-")) %>% 
+  group_by(NOMBRE, treatment, datew) %>% 
+  summarise(ndvi_mean = mean(value, na.rm=TRUE),
+            ndvi_sd = sd(value, na.rm=TRUE),
+            ndvi_se = plotrix::std.error(value, na.rm=TRUE),
+            n = length(value)) %>% 
+  ungroup() %>% 
+  mutate(date = ISOweek2date(paste(datew, "1", sep="-"))) 
+```
+
+- Prepare control values 
+
+```{r prepare-control}
+control_np <- ndvi_avg %>%
+  filter(str_detect(NOMBRE, "AL_CON_NP")) %>%
+  group_by(date) %>%
+  summarise(
+    CONTROL = mean(ndvi_mean, na.rm = TRUE),
+    CONTROL_sd = sd(ndvi_mean, na.rm = TRUE),
+    CONTROL_se = plotrix::std.error(ndvi_mean, na.rm = TRUE),
+    n = length(ndvi_mean)
+  ) %>%
+  ungroup()
+
+control_p <- ndvi_avg %>%
+  filter(str_detect(NOMBRE, "AL_CON_P")) %>%
+  group_by(date) %>%
+  summarise(
+    CONTROL = mean(ndvi_mean, na.rm = TRUE),
+    CONTROL_sd = sd(ndvi_mean, na.rm = TRUE),
+    CONTROL_se = plotrix::std.error(ndvi_mean, na.rm = TRUE),
+    n = length(ndvi_mean)
+  ) %>%
+  ungroup()
+
+control_all <- ndvi_avg %>%
+  filter(str_detect(NOMBRE, "AL_CON_")) %>%
+  group_by(date) %>%
+  summarise(
+    CONTROL = mean(ndvi_mean, na.rm = TRUE),
+    CONTROL_sd = sd(ndvi_mean, na.rm = TRUE),
+    CONTROL_se = plotrix::std.error(ndvi_mean, na.rm = TRUE),
+    n = length(ndvi_mean)
+  ) %>%
+  ungroup()
+```
+
+
+# Compute QNDVI  
+
+**QNDVI** represents a way of monitoring vegetation recovery after burning [see @DiazDelgadoetal2002SatelliteEvidence, and references therein]. It is the quotient between the NDVI values of the burned area and the unburned control areas of similar phenological variation and specific composition before the fire. 
+
+- QNDVI provides revegetation monitoring that is more independent of year and period of year.
+
+- Wildfire produce a clear drop in NDVI. 
+- Regeneration could be evaluated simply monitoring NDVI recovery after fire. However, results would be affected by seasonal and interannual variations in phenology (note that images are not always available at the same period because of cloud coverage) and by the particular climatic conditions of each year. In order to minimize these effects, the quotient between the average NDVI measurements of burned areas and the average NDVI measurements of unburned, neighboring areas are computed. 
+
+
+```{r computeQNDVI}
+qndvi <- ndvi_avg %>% 
+  filter(!(str_detect(NOMBRE, "AL_CON"))) %>%
+  dplyr::select(NOMBRE, ndvi_mean, date) %>%
+  pivot_wider(values_from = ndvi_mean, names_from = NOMBRE)
+
+
+qndvi <- inner_join(
+  qndvi, 
+  control_all %>% 
+    dplyr::select(date, CONTROL)
+  ) %>% 
+  mutate_at(vars(starts_with("AL_")), function(i) i / .$CONTROL)
+```
+
+
+## Explore QNDVI at plot level 
+
+```{r exploreQNDVI-plotlevel}
+qndvi_long <- qndvi %>%
+  pivot_longer(-date, names_to = "NOMBRE", values_to = "Qndvi") %>%
+  filter(NOMBRE != "CONTROL") %>%
+  mutate(treatment = case_when(
+      str_detect(NOMBRE, "AL_PR") ~ "Grazing+Spring",
+      str_detect(NOMBRE, "AL_P_") ~ "Grazing+Autumn",
+      str_detect(NOMBRE, "AL_NP_") ~ "NoGrazing+Autumn")) %>% 
+  filter(Qndvi < 2)
+
+
+qndvi_long %>% 
+  ggplot(aes(x = date, y = Qndvi, group = NOMBRE, colour = treatment)) +
+  geom_line() +
+  facet_wrap(~NOMBRE, scales = "free_y") +
+  geom_hline(yintercept = 1) +
+  theme_bw() + 
+  theme(panel.grid.minor = element_blank(), 
+        legend.position = "bottom")
+```
+
+
+```{r exploreQNDVI-treatment}
+qndvi_avg <- qndvi_long %>% 
+  group_by(date, treatment) %>% 
+  summarise(mean = mean(Qndvi, na.rm=TRUE), 
+            sd = sd(Qndvi, na.rm=TRUE), 
+            se = plotrix::std.error(Qndvi, na.rm=TRUE)) 
+```
+
+
+```{r, eval=FALSE}
+qndvi_avg %>% 
+  filter(treatment != "Grazing+Spring") %>% 
+  ggplot(aes(x=date, y=mean, colour=treatment, fill=treatment)) + 
+  geom_ribbon(aes(ymin = mean - se, ymax=mean+se), alpha = .3) +
+  geom_line(aes(y=mean)) +
+  theme_bw() + 
+  theme(panel.grid.minor = element_blank()) + 
+  geom_hline(yintercept = 1) +
+  scale_colour_manual(values=c("blue", "orange")) + 
+  scale_fill_manual(values=c("blue", "orange")) 
+```
+
+```{r}
+library(dygraphs)
+library(xts)
+
+np <- qndvi_avg %>% 
+  filter(treatment == "NoGrazing+Autumn") %>% 
+  rowwise() %>% 
+  mutate(lwr.np = mean - se,
+         upr.np = mean + se) %>% 
+  dplyr::select(date, mean.np = mean, lwr.np, upr.np) 
+
+p <- qndvi_avg %>% 
+  filter(treatment == "Grazing+Autumn") %>% 
+  rowwise() %>% 
+  mutate(lwr.p = mean - se,
+         upr.p = mean + se) %>% 
+  dplyr::select(date, mean.p = mean, lwr.p, upr.p) 
+
+pr <- qndvi_avg %>% 
+  filter(treatment == "Grazing+Spring") %>% 
+  rowwise() %>% 
+  mutate(lwr.pr = mean - se,
+         upr.pr = mean + se) %>% 
+  dplyr::select(date, mean.pr = mean, lwr.pr, upr.pr) 
+
+df.ts <- inner_join(np, p) %>% 
+  inner_join(pr)
+
+ts <- xts(x= df.ts[,-1], order.by =df.ts$date)
+```
+
+## *Grazing+Autumn* vs. *NoGrazing+Autumn* 
+
+### **QNDVI** 
+```{r p-vs-npQNDVI, out.width='100%', echo = FALSE}
+dygraph(ts[,c("mean.np", "lwr.np", "upr.np",
+              "mean.p", "lwr.p", "upr.p")]) %>% 
+  dyAxis("y", label = "QNDVI") %>% 
+  dyAxis("x", drawGrid = FALSE) %>%
+  dySeries(c("lwr.np", "mean.np", "upr.np"), 
+           label = "NoGrazing+Autumn", color = "orange") %>% 
+  dySeries(c("lwr.p", "mean.p", "upr.p"), 
+         label = "Grazing+Autumn", color = "blue") %>% 
+  dyRangeSelector() %>% 
+  dyEvent("2018-12-18", "Autumn Fire", labelLoc = "bottom") 
+```
+
+
+### **NDVI** 
+
+```{r p-vs-npNDVI, echo=FALSE, out.width='100%'}
+ndvi_avg_treat <- ndvi_avg %>% 
+  group_by(date, treatment) %>% 
+  summarise(mean = mean(ndvi_mean, na.rm=TRUE), 
+            sd = sd(ndvi_mean, na.rm=TRUE), 
+            se = plotrix::std.error(ndvi_mean, na.rm=TRUE)) 
+
+
+np.n <- ndvi_avg_treat %>% 
+  filter(treatment == "NoGrazing+Autumn") %>% 
+  rowwise() %>% 
+  mutate(lwr.np = mean - se,
+         upr.np = mean + se) %>% 
+  dplyr::select(date, mean.np = mean, lwr.np, upr.np) 
+
+p.n <- ndvi_avg_treat %>% 
+  filter(treatment == "Grazing+Autumn") %>% 
+  rowwise() %>% 
+  mutate(lwr.p = mean - se,
+         upr.p = mean + se) %>% 
+  dplyr::select(date, mean.p = mean, lwr.p, upr.p) 
+
+pr.n <- ndvi_avg_treat %>% 
+  filter(treatment == "Grazing+Spring") %>% 
+  rowwise() %>% 
+  mutate(lwr.pr = mean - se,
+         upr.pr = mean + se) %>% 
+  dplyr::select(date, mean.pr = mean, lwr.pr, upr.pr) 
+
+df.tsN <- inner_join(np.n, p.n) %>% 
+  inner_join(pr.n)
+ts.n <- xts(x= df.tsN[,-1], order.by =df.tsN$date)
+
+dygraph(ts.n[,c("mean.np", "lwr.np", "upr.np",
+              "mean.p", "lwr.p", "upr.p")]) %>% 
+  dyAxis("y", label = "NDVI") %>% 
+  dyAxis("x", drawGrid = FALSE) %>%
+  dySeries(c("lwr.np", "mean.np", "upr.np"), 
+           label = "NoGrazing+Autumn", color = "orange") %>% 
+  dySeries(c("lwr.p", "mean.p", "upr.p"), 
+         label = "Grazing+Autumn", color = "blue") %>% 
+  dyRangeSelector() %>% 
+  dyEvent("2018-12-18", "Autumn Fire", labelLoc = "bottom") 
+```
+
+
+## All series  
+
+### **QNDVI** 
+
+```{r allSeries, echo=FALSE, out.width='100%'}
+dygraph(ts) %>% 
+  dyAxis("y", label = "QNDVI") %>% 
+  dyAxis("x", drawGrid = FALSE) %>%
+  dySeries(c("lwr.np", "mean.np", "upr.np"), 
+           label = "NoGrazing+Autumn", color = "orange") %>% 
+  dySeries(c("lwr.p", "mean.p", "upr.p"), 
+         label = "Grazing+Autumn", color = "blue") %>% 
+  dySeries(c("lwr.pr", "mean.pr", "upr.pr"), 
+         label = "Grazing+Spring", color = "green") %>% 
+  dyRangeSelector() %>% 
+  dyEvent("2018-12-18", "Autumn Fire", labelLoc = "bottom") %>% 
+  dyEvent("2019-05-07", "Spring Fire", labelLoc = "bottom") #%>% 
+ # dyHighlight(highlightCircleSize = 5, 
+  #            highlightSeriesBackgroundAlpha = 0.4,
+   #           hideOnMouseOut = TRUE)
+```
+
+
+### **NDVI**
+
+```{r, echo=FALSE, out.width='100%'}
+dygraph(ts.n) %>% 
+  dyAxis("y", label = "NDVI") %>% 
+  dyAxis("x", drawGrid = FALSE) %>%
+  dySeries(c("lwr.np", "mean.np", "upr.np"), 
+           label = "NoGrazing+Autumn", color = "orange") %>% 
+  dySeries(c("lwr.p", "mean.p", "upr.p"), 
+         label = "Grazing+Autumn", color = "blue") %>% 
+    dySeries(c("lwr.pr", "mean.pr", "upr.pr"), 
+         label = "Grazing+Spring", color = "green") %>% 
+  dyRangeSelector() %>% 
+  dyEvent("2018-12-18", "Autumn Fire", labelLoc = "bottom") %>% 
+  dyEvent("2019-05-07", "Spring Fire", labelLoc = "bottom")
+```
+
+
+
+
+# Appendix 
+
+- Explore NDVI evolution of control plots 
+
+```{r control-explore}
+control_np <- ndvi_avg %>%
+  filter(str_detect(NOMBRE, "AL_CON_NP")) %>%
+  group_by(date) %>%
+  summarise(
+    CONTROL = mean(ndvi_mean, na.rm = TRUE),
+    CONTROL_sd = sd(ndvi_mean, na.rm = TRUE),
+    CONTROL_se = plotrix::std.error(ndvi_mean, na.rm = TRUE),
+    n = length(ndvi_mean)
+  ) %>%
+  ungroup()
+
+control_p <- ndvi_avg %>%
+  filter(str_detect(NOMBRE, "AL_CON_P")) %>%
+  group_by(date) %>%
+  summarise(
+    CONTROL = mean(ndvi_mean, na.rm = TRUE),
+    CONTROL_sd = sd(ndvi_mean, na.rm = TRUE),
+    CONTROL_se = plotrix::std.error(ndvi_mean, na.rm = TRUE),
+    n = length(ndvi_mean)
+  ) %>%
+  ungroup()
+
+control_all <- ndvi_avg %>%
+  filter(str_detect(NOMBRE, "AL_CON_")) %>%
+  group_by(date) %>%
+  summarise(
+    CONTROL = mean(ndvi_mean, na.rm = TRUE),
+    CONTROL_sd = sd(ndvi_mean, na.rm = TRUE),
+    CONTROL_se = plotrix::std.error(ndvi_mean, na.rm = TRUE),
+    n = length(ndvi_mean)
+  ) %>%
+  ungroup()
+```
+
+```{r control-explore-plot}
+ggplot(control_all, aes(x=date, y=CONTROL))+
+  geom_line() +
+  geom_line(data=control_np, aes(x=date, y=CONTROL), colour = "blue") +
+  geom_line(data=control_p, aes(x=date, y=CONTROL), colour = "red") +
+  theme_bw() 
+```
+
+
+
+

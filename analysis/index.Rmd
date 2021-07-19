@@ -16,3 +16,5 @@ Analysis of derived remote sensing indices for Alcóntar area (Sierra de Filabre
 - Generate NDVI data for selected plots (*parcelas 500 m^2^*) from Sentinel-S2R. See [**here**](prepara_sentinel2.html)
 
 ## Analysis 
+
+- [**Explore evolution of NDVI and QNDVI from Sentinel2A data**](temporal_evolution_ndvi.html) 
