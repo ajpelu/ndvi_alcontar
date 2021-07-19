@@ -35,32 +35,9 @@ library(exactextractr)
 
 - Cobertura espacial:
 
-  - Se han creado unas parcelas control virtuales (*n*=8) en el entorno de la Experiencia Piloto (*EP*). 
+  - Se han creado unas parcelas control virtuales (*n*=8) en el entorno de la Experiencia Piloto (*EP*). Ver (área de estudio)[study_area.html].
   - Se ha creado un *area of interest* (aoi) para extraer la información de satélite y posteriormente realizar los análisis.  
   
-- Esquema: 
-
-```{r schema-aoi, echo=FALSE}
-# http://magjac.com/graphviz-visual-editor/
-DiagrammeR::grViz("
-digraph {
-node [shape = box, fontname = Helvetica]
-  EP; parcelas; AOI[label='Area of Interest']
-
-node [shape = oval, color = green];
-
-node [shape=parallelogram]
-union[label='Spatial Union']; 
-bb [label='Bounding box']; 
-buffer[label = 'buffer 50 m'];
-
-EP -> union;
-parcelas -> union;
-union -> bb -> buffer -> AOI
-}
-")
-```
-
 ```{r read.spatial, echo=FALSE}
 pastos <- st_read(dsn = here::here("data/spatial/02_PASTOS_ADYACENTES/Pastos_adyacentes.shp"),
                quiet = TRUE)
@@ -75,28 +52,6 @@ parcelas <- st_read(dsn = here::here("data/spatial/parcelas/GEO_PARCELAS.shp"),
 aoi <- st_buffer(st_as_sfc(st_bbox(st_union(parcelas, ep))), dist = 50, endCapStyle = 'FLAT', joinStyle = 'MITRE', mitreLimit = 3)
 ```
 
-```{r plot.parcelas}
-mapviewOptions(default = TRUE)
-# mapviewGetOption("basemaps")
-mapviewOptions(basemaps = c(
-  "Esri.WorldImagery", "CartoDB.Positron",
-  "OpenStreetMap", "OpenTopoMap"
-))
-
-mapview(aoi, color = "yellow", col.regions = 'transparent', lwd = 1.5) +
-mapview(ep,
-        zcol = "ABREVIA", col.regions = c("#8dd3c7","#ff7f00","#bebada"), 
-          layer.name = "EP",
-  popup = popupTable(ep, zcol = c("ABREVIA", "Nombre_zon", "SUPERFICIE"))
-) +
-  mapview(parcelas,
-    layer.name = "Parcelas", zcol="TIPO", col.regions = c("blue","red"),
-    popup = popupTable(parcelas,
-      zcol = c("NOMBRE", "TRATAMIENT", "TIPO")
-    ), 
-    label = parcelas$NOMBRE
-  ) 
-```
 
 ## Esquema de trabajo 
 ```{r schema-gee, echo=FALSE}
