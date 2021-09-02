@@ -396,7 +396,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-07-13
+<strong>Last updated:</strong> 2021-09-02
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -487,16 +487,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong0b3fc4c"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 0b3fc4c </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomajpelundvialcontartree82a7ce632bd6f9f9ea4061c368ef49468e14ad0ctargetblank82a7ce6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/ajpelu/ndvi_alcontar/tree/82a7ce632bd6f9f9ea4061c368ef49468e14ad0c" target="_blank">82a7ce6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong0b3fc4c" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomajpelundvialcontartree82a7ce632bd6f9f9ea4061c368ef49468e14ad0ctargetblank82a7ce6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 0b3fc4c. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/ajpelu/ndvi_alcontar/tree/82a7ce632bd6f9f9ea4061c368ef49468e14ad0c" target="_blank">82a7ce6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -505,12 +505,18 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    data/.DS_Store
+    Ignored:    data/spatial/.DS_Store
+    Ignored:    data/spatial/01_EP_ANDALUCIA/.DS_Store
+    Ignored:    data/spatial/parcelas/.DS_Store
 
 Untracked files:
-    Untracked:  data/alcontar_s2NDVI/
-    Untracked:  data/s2ndvi.csv
-    Untracked:  data/spatial/
-    Untracked:  output/ndvi_alcontar.gif
+    Untracked:  Untitled.Rmd
+    Untracked:  Untitled.docx
+    Untracked:  analysis/pastoreo_gps.Rmd
+    Untracked:  data/gps_data/
+    Untracked:  output/alcontar_gps.gif
+    Untracked:  output/alcontar_gps2.gif
 
 </code></pre>
 <p>
@@ -551,10 +557,44 @@ Message
 <tbody>
 <tr>
 <td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/ajpelu/ndvi_alcontar/blob/82a7ce632bd6f9f9ea4061c368ef49468e14ad0c/analysis/prepara_datos.Rmd" target="_blank">82a7ce6</a>
+</td>
+<td>
+ajpelu
+</td>
+<td>
+2021-09-02
+</td>
+<td>
+remove sensible info
+</td>
+</tr>
+<tr>
+<td>
 html
 </td>
 <td>
-c924249
+<a href="https://rawcdn.githack.com/ajpelu/ndvi_alcontar/c38147e852d29b8c5c01256c5424bc3c4af89db2/docs/prepara_datos.html" target="_blank">c38147e</a>
+</td>
+<td>
+Antonio J Perez-Luque
+</td>
+<td>
+2021-07-13
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/ajpelu/ndvi_alcontar/c924249b509b3c28ded8922fee0be72427a525a4/docs/prepara_datos.html" target="_blank">c924249</a>
 </td>
 <td>
 Antonio J Perez-Luque
@@ -571,7 +611,7 @@ Build site.
 Rmd
 </td>
 <td>
-c8e8e5f
+<a href="https://github.com/ajpelu/ndvi_alcontar/blob/c8e8e5f3902e5a9c8e1f601f7c06aa7f682111d0/analysis/prepara_datos.Rmd" target="_blank">c8e8e5f</a>
 </td>
 <td>
 Antonio J Perez-Luque
@@ -605,15 +645,6 @@ library(DiagrammeR)</code></pre>
 <pre class="r"><code>pastos &lt;- st_read(dsn = here::here(&quot;data/spatial/02_PASTOS_ADYACENTES/Pastos_adyacentes.shp&quot;),
                quiet = TRUE)
 aoi &lt;- st_as_sfc(st_bbox(pastos))</code></pre>
-<pre class="r"><code>library(rgee)
-ee_Initialize(email=&quot;ajperez@go.ugr.es&quot;)</code></pre>
-<pre><code>── rgee 1.0.9 ─────────────────────────────────────── earthengine-api 0.1.270 ── 
- ✓ email: ajperez@go.ugr.es 
- ✓ Initializing Google Earth Engine:
- ✓ Initializing Google Earth Engine:  DONE!
-
- ✓ Earth Engine user: users/ajperez 
-──────────────────────────────────────────────────────────────────────────────── </code></pre>
 <pre class="r"><code>ee_aoi &lt;- aoi %&gt;% 
   sf_as_ee()
 
@@ -670,7 +701,7 @@ Map$addLayer(
   )
 ))+ Map$addLayer(ee_aoi)</code></pre>
 <div id="htmlwidget-75fda900fe0110d6e6aa" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-75fda900fe0110d6e6aa">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],[],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addTiles","args":["https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/393e4a84a0d80a5bd2a4499c90e0fa15-f7d1d333d05e7406b0ee4427d4c93648/tiles/{z}/{x}/{y}","untitled_24e26771f0c","untitled_24e26771f0c",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],"untitled_24e26771f0c",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"hideGroup","args":[null]},{"method":"addTiles","args":["https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/201b3f0c6a993f28f194aea6faea327e-7bf4c7912d5cd2c9540f62a48f6633b2/tiles/{z}/{x}/{y}","untitled_24e276975024","untitled_24e276975024",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],["untitled_24e26771f0c","untitled_24e276975024"],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"hideGroup","args":[null]}],"setView":[[37.32,-2.6],10,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<script type="application/json" data-for="htmlwidget-75fda900fe0110d6e6aa">{"x":{"options":{"minZoom":1,"maxZoom":52,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane"}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],[],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addTiles","args":["https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/cf07e5842511d5522f6cc95a964e537f-9e721ab3055b3b778ce48e3d08c461e5/tiles/{z}/{x}/{y}","untitled_821b2ca342eb","untitled_821b2ca342eb",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],"untitled_821b2ca342eb",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"hideGroup","args":[null]},{"method":"addTiles","args":["https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/201b3f0c6a993f28f194aea6faea327e-1fc76b2e4622eab75a6052b73d796159/tiles/{z}/{x}/{y}","untitled_821b127e6932","untitled_821b127e6932",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],["untitled_821b2ca342eb","untitled_821b127e6932"],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"hideGroup","args":[null]}],"setView":[[37.32,-2.6],10,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
 <pre class="r"><code>col &lt;- ee$ImageCollection(&quot;MODIS/006/MOD13Q1&quot;)$select(&#39;NDVI&#39;)
 
 region &lt;- ee_aoi$bounds()
@@ -742,7 +773,7 @@ animation_wtxt &lt;-
     boxcolor = &quot;#000000&quot;
   ) 
 
-ee_utils_gif_save(animation_wtxt, path =here::here(&quot;output/ndvi_alcontar.gif&quot;))</code></pre>
+ee_utils_gif_save(animation_wtxt, path =here::here(&quot;docs/output/ndvi_alcontar.gif&quot;))</code></pre>
 <p><img src="../output/ndvi_alcontar.gif" style="width:70.0%" /></p>
 <br>
 <p>
@@ -768,42 +799,42 @@ attached base packages:
 
 other attached packages:
  [1] rgee_1.0.9         DiagrammeR_1.0.6.1 here_1.0.1         raster_3.4-5      
- [5] sp_1.4-5           sf_0.9-7           forcats_0.5.1      stringr_1.4.0     
+ [5] sp_1.4-5           sf_1.0-2           forcats_0.5.1      stringr_1.4.0     
  [9] dplyr_1.0.6        purrr_0.3.4        readr_1.4.0        tidyr_1.1.3       
-[13] tibble_3.1.2       ggplot2_3.3.3      tidyverse_1.3.1    workflowr_1.6.2   
+[13] tibble_3.1.2       ggplot2_3.3.5      tidyverse_1.3.1    workflowr_1.6.2   
 
 loaded via a namespace (and not attached):
- [1] fs_1.5.0                lubridate_1.7.10        RColorBrewer_1.1-2     
- [4] httr_1.4.2              rprojroot_2.0.2         tools_4.0.2            
- [7] backports_1.2.1         bslib_0.2.4             utf8_1.1.4             
-[10] R6_2.5.0                KernSmooth_2.23-18      lazyeval_0.2.2         
-[13] rgeos_0.5-5             DBI_1.1.1               colorspace_2.0-0       
-[16] withr_2.4.1             tidyselect_1.1.0        processx_3.5.2         
-[19] leaflet_2.0.4.1         curl_4.3                compiler_4.0.2         
-[22] git2r_0.28.0            leafem_0.1.3            cli_2.5.0              
-[25] rvest_1.0.0             geojsonsf_2.0.1         xml2_1.3.2             
-[28] sass_0.3.1              scales_1.1.1            classInt_0.4-3         
-[31] digest_0.6.27           foreign_0.8-81          rmarkdown_2.8          
-[34] base64enc_0.1-3         pkgconfig_2.0.3         htmltools_0.5.1.1      
-[37] dbplyr_2.1.1            htmlwidgets_1.5.3       rlang_0.4.10           
-[40] readxl_1.3.1            httpcode_0.3.0          rstudioapi_0.13        
-[43] visNetwork_2.0.9        jquerylib_0.1.3         generics_0.1.0         
-[46] jsonlite_1.7.2          crosstalk_1.1.1         magrittr_2.0.1         
-[49] Matrix_1.3-2            Rcpp_1.0.6              munsell_0.5.0          
-[52] fansi_0.4.2             reticulate_1.18         lifecycle_1.0.0        
-[55] stringi_1.5.3           whisker_0.4             yaml_2.2.1             
-[58] jqr_1.2.0               maptools_1.0-2          grid_4.0.2             
-[61] promises_1.2.0.1        crayon_1.4.1            geojsonio_0.9.4        
-[64] lattice_0.20-41         haven_2.3.1             geojson_0.3.4          
-[67] hms_1.0.0               knitr_1.31              ps_1.5.0               
-[70] pillar_1.6.1            codetools_0.2-18        crul_1.0.0             
-[73] reprex_2.0.0            glue_1.4.2              evaluate_0.14          
-[76] leaflet.providers_1.9.0 V8_3.4.0                modelr_0.1.8           
-[79] png_0.1-7               vctrs_0.3.8             httpuv_1.5.5           
-[82] cellranger_1.1.0        gtable_0.3.0            assertthat_0.2.1       
-[85] xfun_0.23               broom_0.7.6             e1071_1.7-4            
-[88] later_1.1.0.1           class_7.3-18            units_0.6-7            
-[91] ellipsis_0.3.2         </code></pre>
+ [1] leafem_0.1.3            colorspace_2.0-0        ellipsis_0.3.2         
+ [4] class_7.3-18            leaflet_2.0.4.1         rprojroot_2.0.2        
+ [7] base64enc_0.1-3         fs_1.5.0                rstudioapi_0.13        
+[10] httpcode_0.3.0          proxy_0.4-26            fansi_0.4.2            
+[13] lubridate_1.7.10        xml2_1.3.2              codetools_0.2-18       
+[16] knitr_1.31              jsonlite_1.7.2          broom_0.7.9            
+[19] dbplyr_2.1.1            png_0.1-7               rgeos_0.5-5            
+[22] compiler_4.0.2          httr_1.4.2              backports_1.2.1        
+[25] assertthat_0.2.1        Matrix_1.3-2            fastmap_1.1.0          
+[28] lazyeval_0.2.2          cli_2.5.0               later_1.1.0.1          
+[31] leaflet.providers_1.9.0 visNetwork_2.0.9        htmltools_0.5.2        
+[34] tools_4.0.2             gtable_0.3.0            glue_1.4.2             
+[37] geojson_0.3.4           V8_3.4.0                Rcpp_1.0.7             
+[40] cellranger_1.1.0        jquerylib_0.1.3         vctrs_0.3.8            
+[43] crul_1.0.0              crosstalk_1.1.1         xfun_0.23              
+[46] ps_1.5.0                rvest_1.0.0             lifecycle_1.0.0        
+[49] jqr_1.2.0               scales_1.1.1            hms_1.0.0              
+[52] promises_1.2.0.1        RColorBrewer_1.1-2      yaml_2.2.1             
+[55] curl_4.3                reticulate_1.18         sass_0.3.1             
+[58] stringi_1.7.4           maptools_1.0-2          e1071_1.7-8            
+[61] rlang_0.4.10            pkgconfig_2.0.3         evaluate_0.14          
+[64] lattice_0.20-41         htmlwidgets_1.5.3       processx_3.5.2         
+[67] tidyselect_1.1.1        magrittr_2.0.1          geojsonsf_2.0.1        
+[70] R6_2.5.0                geojsonio_0.9.4         generics_0.1.0         
+[73] DBI_1.1.1               pillar_1.6.1            haven_2.3.1            
+[76] whisker_0.4             foreign_0.8-81          withr_2.4.1            
+[79] units_0.7-2             modelr_0.1.8            crayon_1.4.1           
+[82] KernSmooth_2.23-18      utf8_1.1.4              rmarkdown_2.8          
+[85] grid_4.0.2              readxl_1.3.1            git2r_0.28.0           
+[88] reprex_2.0.0            digest_0.6.27           classInt_0.4-3         
+[91] httpuv_1.5.5            munsell_0.5.0           bslib_0.2.4            </code></pre>
 </div>
 </div>
 
