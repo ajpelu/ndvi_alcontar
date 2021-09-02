@@ -34,9 +34,9 @@ aoi <- st_as_sfc(st_bbox(pastos))
 ```
 
 
-```{r init-gee}
+```{r init-gee, echo=FALSE, message=FALSE}
 library(rgee)
-ee_Initialize(email="ajperez@go.ugr.es")
+ee_Initialize(email="ajperez@go.ugr.es", quiet=TRUE)
 ```
 
 ```{r prepare-aoi}
@@ -175,7 +175,7 @@ animation_wtxt <-
     boxcolor = "#000000"
   ) 
 
-ee_utils_gif_save(animation_wtxt, path =here::here("output/ndvi_alcontar.gif"))
+ee_utils_gif_save(animation_wtxt, path =here::here("docs/output/ndvi_alcontar.gif"))
 ```
 
 
