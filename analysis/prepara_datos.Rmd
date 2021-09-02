@@ -36,6 +36,7 @@ aoi <- st_as_sfc(st_bbox(pastos))
 
 ```{r init-gee, echo=FALSE, message=FALSE}
 library(rgee)
+# datos sensibles
 ee_Initialize(email="ajperez@go.ugr.es", quiet=TRUE)
 ```
 
